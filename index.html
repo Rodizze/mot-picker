@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FD 48/96 Vacation & MOT Picks</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>FD 48/96 Pick System</h1>
+
+    <!-- 🧍‍♂️ User Selector -->
+    <label for="userSelect"><strong>Select Your Name:</strong></label>
+    <select id="userSelect">
+      <option value="">-- Choose your name --</option>
+    </select>
+
+    <!-- 👋 Welcome Message -->
+    <div id="welcomeMsg" class="welcome-message"></div>
+
+    <br><br>
+
+    <!-- 🎯 Mode Switch -->
+    <button id="modeVacation" class="mode-btn active">Vacation (0/6)</button>
+    <button id="modeMOT" class="mode-btn">MOT Tours (0/2)</button>
+
+    <br><br>
+
+    <!-- 📆 Calendar Grid -->
+    <div id="calendar"></div>
+
+    <br>
+
+    <!-- 🚀 Submission -->
+    <button id="submitBtn" disabled>Submit Picks</button>
+  </div>
+
+  <!-- 📦 PapaParse -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
+  <!-- 🧠 Main Script -->
+  <script src="script.js"></script>
+</body>
+</html>
