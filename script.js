@@ -1,6 +1,6 @@
 // 🌐 Config
 const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTA2O4M1ltvZh8y3ywbkFwsdn1nWUgYPUy3S5HVzS7FD8eWeJVA9OqR0k2AjiQ-MdPpg86KYj0yvbJ2/pub?output=csv';
-const submitURL = 'https://script.google.com/macros/s/AKfycbxAY2JJ-drB2IjYh7n3iCCrqmIheOefeNYkK5wDoyvw8z5X_V-81PYGg_WZ8iHditW3NA/exec'; // Deploy your Apps Script Web App here
+const submitURL = 'https://script.google.com/macros/s/AKfycby_6YBNn2YcIWV89npsaXXX4D7MPdbR_qLYAb8JN-xXzkZyRM7wEb5hZsbKg-gpFA1K/exec';
 
 // ⌛ Limits & State
 const vacationLimit = 6;
@@ -56,7 +56,7 @@ async function loadRoster() {
     });
 }
 
-// 📆 Shift cycle logic (48/96)
+// 📆 Shift cycle logic
 function getShiftForDay(idx) {
   const cycle = ['A','A','B','B','C','C'];
   return cycle[idx % cycle.length];
@@ -70,10 +70,9 @@ async function checkSeniorityTurn() {
     .sort((a,b)=> a.seniority - b.seniority);
 
   try {
-    const resp = await fetch(submitURL + '?action=list', {mode:'cors'});
-    const done = await resp.json(); // Already submitted names
+    const resp = await fetch(submitURL + '?action=list');
+    const done = await resp.json();
     const next = peers.find(f => !done.includes(f.name));
-
     if (!next) {
       disableUI(`✅ All picks done for Shift ${currentUser.shift}`);
     } else if (next.name !== currentUser.name) {
@@ -88,7 +87,7 @@ async function checkSeniorityTurn() {
   }
 }
 
-// 📴 UI control helpers
+// ⛔ UI helpers
 function disableUI(msg) {
   modeBtnVac.disabled = modeBtnMOT.disabled = submitBtn.disabled = true;
   welcomeMsg.textContent = msg;
@@ -99,7 +98,7 @@ function enableUI() {
   updateModeUI();
 }
 
-// 🛠 Update VISUAL Counts & Button State
+// UI visual refresh
 function updateModeUI() {
   modeBtnVac.classList.toggle('active', mode === 'vacation');
   modeBtnMOT.classList.toggle('active', mode === 'mot');
@@ -108,15 +107,15 @@ function updateModeUI() {
   submitBtn.disabled = !(motPicks.length / 2 === motLimit);
 }
 
-// 🎨 Clear previous selections of the active mode
+// Clear visuals
 function clearModeVisuals() {
   const cls = mode === 'vacation' ? 'selected-vacation' : 'selected-mot';
-  document.querySelectorAll(`.day.${cls}`).forEach(e => {
-    e.classList.remove(cls, 'selected');
-  });
+  document.querySelectorAll(`.day.${cls}`).forEach(e =>
+    e.classList.remove(cls, 'selected')
+  );
 }
 
-// ⚠ Clicking days
+// 🧠 Day click logic
 function handlePick(div, idx) {
   const date = div.dataset.date;
   const shift = div.dataset.shift;
@@ -150,18 +149,18 @@ function handlePick(div, idx) {
   updateModeUI();
 }
 
-// 🔴 Visual shake for invalid click
+// Shake
 function shake(div) {
   div.classList.add('shake');
   setTimeout(() => div.classList.remove('shake'), 300);
 }
 
-// 🗓️ Build month-by-month calendar
+// Build calendar
 function renderCalendar() {
   calContainer.innerHTML = '';
   if (!currentUser) return;
 
-  let globalIdx = -2; // ensures Aug 1 = idx 0 = A shift
+  let globalIdx = -2;
 
   monthRanges.forEach(m => {
     const mb = document.createElement('div');
@@ -194,9 +193,7 @@ function renderCalendar() {
       }
 
       if (!blocked) {
-        div.addEventListener('click', () => 
-          handlePick(div, globalIdx)
-        );
+        div.addEventListener('click', () => handlePick(div, globalIdx));
       } else {
         div.classList.add('blocked');
       }
@@ -214,7 +211,7 @@ function renderCalendar() {
   updateModeUI();
 }
 
-// 🌟 Welcome text
+// 🎉 Welcome
 function updateWelcome() {
   if (!currentUser) return;
   const vacLeft = vacationLimit - vacationPicks.length;
@@ -224,7 +221,7 @@ function updateWelcome() {
     `You have ${vacLeft} vacation days and ${motLeft} MOT tour(s) remaining.`;
 }
 
-// 🧩 Listeners
+// Listeners
 selUser.addEventListener('change', () => {
   currentUser = firefighters.find(f => f.name === selUser.value) || null;
   vacationPicks = [];
@@ -246,6 +243,7 @@ modeBtnMOT.addEventListener('click', () => {
   renderCalendar();
 });
 
+// ✅ Updated submit logic w/ email to next in line
 submitBtn.addEventListener('click', async () => {
   const payload = {
     name: currentUser.name,
@@ -255,6 +253,21 @@ submitBtn.addEventListener('click', async () => {
     vacationPicks,
     motPicks
   };
+
+  const peers = firefighters
+    .filter(f => f.shift === currentUser.shift)
+    .sort((a,b)=> a.seniority - b.seniority);
+
+  const resp = await fetch(submitURL + '?action=list');
+  const done = await resp.json();
+  const next = peers.find(f => !done.includes(f.name) && f.name !== currentUser.name);
+
+  if (next) {
+    payload.notifyEmailTo = next.email;
+    payload.nextName = next.name;
+    payload.appUrl = window.location.href;
+  }
+
   submitBtn.disabled = true;
   await fetch(submitURL, {
     method:'POST',
@@ -262,8 +275,9 @@ submitBtn.addEventListener('click', async () => {
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify(payload)
   });
+
   checkSeniorityTurn();
 });
 
-// 🚀 Initialization
+// Init
 window.addEventListener('DOMContentLoaded', loadRoster);
