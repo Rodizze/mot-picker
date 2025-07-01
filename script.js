@@ -1,6 +1,6 @@
 // 🌐 Config
 const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTA2O4M1ltvZh8y3ywbkFwsdn1nWUgYPUy3S5HVzS7FD8eWeJVA9OqR0k2AjiQ-MdPpg86KYj0yvbJ2/pub?output=csv';
-const submitURL = 'https://script.google.com/macros/s/AKfycby17kNWoXcvBXIbuVwV6ZkidQWu_h92h5GbqoFlerXjVSZBT04xlgF8FQJOzS2kRhoXow/exec'; // Deploy your Apps Script Web App here
+const submitURL = 'https://script.google.com/macros/s/AKfycbxgyapGYRBcZDdenff3eJeuTqhRKK5LxGEHp2gQh7lWbWu6NCo3VNX3O1t6JoSfaiHY4A/exec'; // Deploy your Apps Script Web App here
 
 // ⌛ Limits & State
 const vacationLimit = 6;
