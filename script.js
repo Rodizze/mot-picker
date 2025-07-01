@@ -1,6 +1,6 @@
 // 🌐 Config
 const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTA2O4M1ltvZh8y3ywbkFwsdn1nWUgYPUy3S5HVzS7FD8eWeJVA9OqR0k2AjiQ-MdPpg86KYj0yvbJ2/pub?output=csv';
-const submitURL = 'https://script.google.com/macros/s/AKfycbxgyapGYRBcZDdenff3eJeuTqhRKK5LxGEHp2gQh7lWbWu6NCo3VNX3O1t6JoSfaiHY4A/exec'; // Deploy your Apps Script Web App here
+const submitURL = 'https://script.google.com/macros/s/AKfycbzpqtNTaWsZijwr6h7OniFyXo3QBsYTxSxwiZX-4GXbSj2A4YCYaqzX83sdJTbLbtjTzQ/exec'; // Deploy your Apps Script Web App here
 
 // ⌛ Limits & State
 const vacationLimit = 6;
@@ -161,7 +161,7 @@ function renderCalendar() {
   calContainer.innerHTML = '';
   if (!currentUser) return;
 
-  let globalIdx = -1; // ensures Aug 1 = idx 0 = A shift
+  let globalIdx = -2; // ensures Aug 1 = idx 0 = A shift
 
   monthRanges.forEach(m => {
     const mb = document.createElement('div');
