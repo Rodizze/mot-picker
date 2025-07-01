@@ -1,6 +1,6 @@
 // 🌐 Config
 const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTA2O4M1ltvZh8y3ywbkFwsdn1nWUgYPUy3S5HVzS7FD8eWeJVA9OqR0k2AjiQ-MdPpg86KYj0yvbJ2/pub?output=csv';
-const submitURL = 'https://script.google.com/macros/s/AKfycby_6YBNn2YcIWV89npsaXXX4D7MPdbR_qLYAb8JN-xXzkZyRM7wEb5hZsbKg-gpFA1K/exec';
+const submitURL = 'https://script.google.com/macros/s/AKfycby5sGHDm5obScqFVnOf5qbil_QoMjTDx-jzuD4dWtMtBlaaxO-MEzRIwE2iYuH6bVjLHw/exec';
 
 // ⌛ Limits & State
 const vacationLimit = 6;
