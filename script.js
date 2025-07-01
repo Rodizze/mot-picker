@@ -17,7 +17,7 @@ const welcomeMsg  = document.getElementById('welcomeMsg');
 const modeBtnVac  = document.getElementById('modeVacation');
 const modeBtnMOT  = document.getElementById('modeMOT');
 const submitBtn   = document.getElementById('submitBtn');
-const calContainer = document.getElementById('calendar');
+const calContainer = document.getElementById('calendarContainer');
 
 // 🚫 Blocked Vacation Dates
 const blockedVacationDates = ['2025-12-25','2025-11-27'];
